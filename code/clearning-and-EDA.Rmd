@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(pacman)
-p_load(tidyverse)
+p_load(tidyverse, glue)
 
 
 ```
@@ -31,12 +31,14 @@ df <- df %>% as_tibble()
 # create total net migration between 2015 and 2019
 df <- df %>% 
     rowwise() %>%
-    mutate(net_per_10K_total = sum(net_per_10K_2015, net_per_10K_2016, net_per_10K_2017, net_per_10K_2018, net_per_10K_2019)) %>% 
+    mutate(net_per_10K_total = sum(net_per_10K_2015, net_per_10K_2016, net_per_10K_2017, net_per_10K_2018, net_per_10K_2019)) %>%
     ungroup()
 
 
+# write_rds(df, "skilled-migration/df.rds")
+
 df_plot <- df %>% 
-    filter(base_country_name == "Sweden") %>% 
+    filter(base_country_name == "Germany") %>% 
     arrange(net_per_10K_total) %>% 
     mutate(index = row_number())
     
@@ -47,7 +49,11 @@ df_plot %>%
     pivot_longer(net_per_10K_2015:net_per_10K_2019, names_to = "metric") %>% 
     mutate(year = parse_number(str_remove(metric, "net_per_10K_"))) %>% 
     ggplot(aes(year, value, colour = target_country_name)) +
-    geom_line()
+    geom_line() +
+    geom_hline(yintercept = 0, lty = 2) +
+    labs(x = "Year",
+         y = glue("Net migration to {df_plot$base_country_name}"))
+
 
 df_plot %>% 
     mutate(target_country_name = fct_reorder(target_country_name, net_per_10K_total)) %>% 
@@ -55,4 +61,41 @@ df_plot %>%
     geom_col()
 
 ```
+
+### Cholorpleth
+
+```{r}
+p_load(rnaturalearth, rnaturalearthdata, rgeos, ggthemes)
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+df_map <- df_plot %>% 
+    mutate(iso_a3 = countrycode::countrycode(target_country_name, "country.name", "iso3c"))
+
+df_map <- inner_join(df_map, world, by = "iso_a3")
+
+ggplot(data = df_map) +
+  borders() +
+  geom_sf(aes(fill = net_per_10K_total, geometry = geometry)) +
+  scale_fill_gradient2(midpoint = 0, low = "#91bfdb", high = "#fc8d59") +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_colorbar(barwidth = 20, barheight = 0.5, title.position = "top", title.hjust = .5)) +
+  coord_sf(ylim = c(-50, 80)) +
+  labs(title = glue("Net migration from {df_map$base_country_name}"),
+       fill = "Sum of net migration between 2015 and 2019\n per 10,000 people",
+       caption = "Data: LinkedIn. Net flows are arrivals - departures. \nFigures normalized by size of LinkedIn network in partner country",
+       x = "",
+       y = "")
+
+```
+
+###
+
+
+
+
+Notes:: 
+
+1. Country Migration – Inter and intra country talent migration.  Based on user-reported location. When a user’s updated job location is different from their former location, LinkedIn recognizes this as a physical migration. Given as the net gain or loss of members from another country divided by the average LinkedIn membership of the target (or selected) country during the time period, multiplied by 10,000.  														
+														
 
