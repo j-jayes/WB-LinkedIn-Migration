@@ -56,8 +56,11 @@ df_plot %>%
 
 
 df_plot %>% 
+    mutate(abs = abs(net_per_10K_total),
+           sign = if_else(net_per_10K_total > 0, "Net immigration", "Net migration")) %>% 
+    slice_max(abs, n= 10) %>% 
     mutate(target_country_name = fct_reorder(target_country_name, net_per_10K_total)) %>% 
-    ggplot(aes(net_per_10K_total, target_country_name)) +
+    ggplot(aes(net_per_10K_total, target_country_name, fill = sign)) +
     geom_col()
 
 ```

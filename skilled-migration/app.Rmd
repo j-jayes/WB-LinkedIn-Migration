@@ -65,26 +65,49 @@ inputPanel(
 
 ```{r}
 renderPlotly({
-  
-  df_plot <- df %>% 
+
+  g <- df %>% 
     filter(base_country_name == input$country) %>% 
-    arrange(net_per_10K_total) %>% 
-    mutate(index = row_number())
-  
-  g <- df_plot %>%     
-    slice_max(index, n = input$n_comparisons) %>% 
+    mutate(sign = if_else(net_per_10K_total > 0, "Net sending countries", "Net recieving countries")) %>% 
+    group_by(sign) %>% 
+    mutate(rank = rank(desc((net_per_10K_total)^2))) %>% 
+    ungroup() %>%
+    filter(rank <= 5) %>% 
     select(- net_per_10K_total) %>% 
     pivot_longer(net_per_10K_2015:net_per_10K_2019, names_to = "metric") %>% 
     mutate(year = parse_number(str_remove(metric, "net_per_10K_"))) %>% 
     ggplot(aes(year, value, colour = target_country_name)) +
+    geom_point() +
     geom_line() +
+    facet_wrap(~ sign) +
     scale_color_brewer(palette = "Paired") +
     geom_hline(yintercept = 0, lty = 2) +
     labs(x = "Year",
-         y = glue("Net migration to {df_plot$base_country_name}"))
+         y = glue("Net migration to {input$country}"))
    
    ggplotly(g)
 })
+
+
+# df %>% 
+#     filter(base_country_name == "Germany") %>% 
+#     mutate(sign = if_else(net_per_10K_total > 0, "Net sender", "Net reciever")) %>% 
+#     group_by(sign) %>% 
+#     mutate(rank = rank(desc((net_per_10K_total)^2))) %>% 
+#     ungroup() %>% view()
+#     filter(rank <= 5) %>% 
+#     select(- net_per_10K_total) %>% 
+#     pivot_longer(net_per_10K_2015:net_per_10K_2019, names_to = "metric") %>% 
+#     mutate(year = parse_number(str_remove(metric, "net_per_10K_"))) %>% 
+#     ggplot(aes(year, value, colour = target_country_name)) +
+#     geom_point() +
+#     geom_line() +
+#     facet_wrap(~ sign) +
+#     scale_color_brewer(palette = "Paired") +
+#     geom_hline(yintercept = 0, lty = 2) +
+#     labs(x = "Year",
+#          y = glue("Net migration to "))
+
 ```
 
 
@@ -122,5 +145,26 @@ renderPlot({
 
 })  
   
+```
+
+
+```{r}
+renderPlot({
+  
+  df_plot <- df %>% 
+    filter(base_country_name == input$country) %>% 
+    arrange(net_per_10K_total) %>% 
+    mutate(index = row_number())
+
+  df_plot %>% 
+    mutate(abs = abs(net_per_10K_total),
+           sign = if_else(net_per_10K_total > 0, "Net immigration from", "Net migration to")) %>% 
+    slice_max(abs, n= 10) %>% 
+    mutate(target_country_name = fct_reorder(target_country_name, net_per_10K_total)) %>% 
+    ggplot(aes(net_per_10K_total, target_country_name, fill = sign)) +
+    geom_col()
+
+})  
+
 ```
 
