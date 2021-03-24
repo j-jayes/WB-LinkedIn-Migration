@@ -1,0 +1,58 @@
+---
+title: "Cleaning and EDA"
+author: "JJayes"
+date: "24/03/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(pacman)
+p_load(tidyverse)
+
+
+```
+
+### Purpose
+
+I want to make a dashboard to explore the data in this Linkedin data set on migration and practice my shiny skills
+
+### Reading in data
+
+```{r}
+
+p_load(readxl)
+
+df <- read_excel("data/country_migration.xlsx")
+
+df <- df %>% as_tibble()
+
+# create total net migration between 2015 and 2019
+df <- df %>% 
+    rowwise() %>%
+    mutate(net_per_10K_total = sum(net_per_10K_2015, net_per_10K_2016, net_per_10K_2017, net_per_10K_2018, net_per_10K_2019)) %>% 
+    ungroup()
+
+
+df_plot <- df %>% 
+    filter(base_country_name == "Sweden") %>% 
+    arrange(net_per_10K_total) %>% 
+    mutate(index = row_number())
+    
+    
+df_plot %>%     
+    slice_max(index, n = 10) %>% 
+    select(- net_per_10K_total) %>% 
+    pivot_longer(net_per_10K_2015:net_per_10K_2019, names_to = "metric") %>% 
+    mutate(year = parse_number(str_remove(metric, "net_per_10K_"))) %>% 
+    ggplot(aes(year, value, colour = target_country_name)) +
+    geom_line()
+
+df_plot %>% 
+    mutate(target_country_name = fct_reorder(target_country_name, net_per_10K_total)) %>% 
+    ggplot(aes(net_per_10K_total, target_country_name)) +
+    geom_col()
+
+```
+
