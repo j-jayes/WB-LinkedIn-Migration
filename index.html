@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>LinkedIn Data Comparison</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jonathan Jayes" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link href="libs/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset-0.2.6/panelset.js"></script>
+    <script src="libs/xaringanExtra-progressBar-0.0.1/progress-bar.js"></script>
+    <script src="libs/core-js-2.5.3/shim.min.js"></script>
+    <script src="libs/react-17.0.0/react.min.js"></script>
+    <script src="libs/react-17.0.0/react-dom.min.js"></script>
+    <script src="libs/reactwidget-1.0.0/react-tools.js"></script>
+    <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+    <script src="libs/reactable-binding-0.2.3/reactable.js"></script>
+    <script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+    <script src="libs/typedarray-0.1/typedarray.min.js"></script>
+    <script src="libs/jquery-3.5.1/jquery.min.js"></script>
+    <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+    <link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# LinkedIn Data Comparison
+## Work in progress
+### Jonathan Jayes
+### <a href="https://interludeone.com/">Forte Research Group</a> 16 March, 2022
+
+---
+
+
+class: inverse, center, middle
+
+
+
+
+<style>.xe__progress-bar__container {
+  top:0;
+  opacity: 1;
+  position:absolute;
+  right:0;
+  left: 0;
+}
+.xe__progress-bar {
+  height: 5px;
+  background-color: #EB821D;
+  width: calc(var(--slide-current) / var(--slide-total) * 100%);
+}
+.remark-visible .xe__progress-bar {
+  animation: xe__progress-bar__wipe 200ms forwards;
+  animation-timing-function: cubic-bezier(.86,0,.07,1);
+}
+@keyframes xe__progress-bar__wipe {
+  0% { width: calc(var(--slide-previous) / var(--slide-total) * 100%); }
+  100% { width: calc(var(--slide-current) / var(--slide-total) * 100%); }
+}</style>
+
+# To what extent was electric technology **labour augmenting** or **labour replacing** in the first half of the 20th C in Sweden?
+
+---
+
+# TOC
+
+.pull-left[
+
+## Plan
+
+1. [What's the deal with new technology?](#source)
+
+2. [How can we measure this?](#fit)
+
+    [Quick tour of Autor, Salomons and Seegmiller (2021)](#autor)
+
+3. [How can we get the data?](#digitize)
+
+    [Amazon Web Services showcase](#aws)
+
+4. [Questions please!](#questions)
+
+]
+
+.pull-right[
+
+Photo
+
+]
+
+---
+
+# LinkedIn Data
+
+How does it differ from Arbetsformedlingen data?
+
+Who does it cover, what kinds of jobs?
+
+Specifically last week we were asked about the top skills - would English and Swedish be up there?
+
+---
+
+# Where do we get the data?
+
+### 2 sources:
+
+.pull-left[
+
+&lt;img src="slides/jobs_on_the_rise.PNG" width="1053" style="display: block; margin: auto;" /&gt;
+
+.center[[LinkedIn Jobs on the Rise Reports](https://www.linkedin.com/pulse/linkedin-jobs-rise-2022-10-roles-growing-demand-sweden-/?published=t&amp;trackingId=GHuAReROU0NEoNaBrna3Zg%3D%3D)]
+
+]
+
+.pull-right[
+
+&lt;img src="slides/WB_linkedin.PNG" width="1219" style="display: block; margin: auto;" /&gt;
+
+
+.center[[World Bank LinkedIn Digital Data for Development](https://linkedindata.worldbank.org/data)]
+
+]
+
+---
+
+# Jobs on the Rise
+
+### What are the fastest growing jobs?
+
+The report [Jobs on the Rise 2022](https://business.linkedin.com/talent-solutions/resources/talent-acquisition/jobs-on-the-rise-sweden-cont-fact) says that these 10 are the fastest growing jobs in Sweden.
+
+
+| Rank|Title                               |
+|----:|:-----------------------------------|
+|    1|Talent Acquisition Specialist       |
+|    2|Business Development Representative |
+|    3|Data Engineer                       |
+|    4|Career Counsellor                   |
+|    5|Machine Learning Engineer           |
+|    6|Content Coordinator                 |
+|    7|Back End Developer                  |
+|    8|Software Account Executive          |
+|    9|Sustainability Manager              |
+|   10|Digital Manager                     |
+
+
+---
+
+# Jobs on the Rise
+
+### What are skills for these jobs?
+
+<div id="htmlwidget-4e96729db46e861d77a5" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-4e96729db46e861d77a5">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"title":["Talent Acquisition Specialist","Business Development Representative","Data Engineer","Career Counsellor","Machine Learning Engineer","Content Coordinator","Back End Developer","Software Account Executive","Sustainability Manager","Digital Manager"],"Skill_1":["Employer Branding","Business-to-Business (B2B)","Data Engineering","Coaching","Machine Learning","Copywriting","Git","Solution Selling","Sustainable Development","Digital Strategy"],"Skill_2":["Recruiting","Sales","Apache Spark","Career Development","TensorFlow","Digital Marketing","Docker Products","Software as a Service (SaaS)","Sustainability Reporting","Google Analytics"],"Skill_3":["Sourcing","Software as a Service (SaaS)","Scala","Organisational Development","Deep Learning","Social Media","Amazon Web Services (AWS)","Enterprise Software","Corporate Social Responsibility","Digital Marketing"]},"columns":[{"accessor":"title","name":"title","type":"character","cell":["Talent Acquisition Specialist","Business Development Representative","Data Engineer","Career Counsellor","Machine Learning Engineer","Content Coordinator","Back End Developer","Software Account Executive","Sustainability Manager","Digital Manager"],"header":"title","minWidth":140,"align":"left","headerStyle":{"background":"#f7f7f8"}},{"accessor":"Skill_1","name":"Skill_1","type":"character","cell":["Employer Branding","Business-to-Business (B2B)","Data Engineering","Coaching","Machine Learning","Copywriting","Git","Solution Selling","Sustainable Development","Digital Strategy"],"header":"Skill 1","minWidth":70,"align":"center","headerStyle":{"background":"#f7f7f8"}},{"accessor":"Skill_2","name":"Skill_2","type":"character","cell":["Recruiting","Sales","Apache Spark","Career Development","TensorFlow","Digital Marketing","Docker Products","Software as a Service (SaaS)","Sustainability Reporting","Google Analytics"],"header":"Skill 2","minWidth":70,"align":"center","headerStyle":{"background":"#f7f7f8"}},{"accessor":"Skill_3","name":"Skill_3","type":"character","cell":["Sourcing","Software as a Service (SaaS)","Scala","Organisational Development","Deep Learning","Social Media","Amazon Web Services (AWS)","Enterprise Software","Corporate Social Responsibility","Digital Marketing"],"header":"Skill 3","minWidth":70,"align":"center","headerStyle":{"background":"#f7f7f8"}}],"defaultPageSize":5,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"f29b845e0f33fcee939c48dfa24ff0c9","key":"f29b845e0f33fcee939c48dfa24ff0c9"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# Jobs on the Rise
+
+### What share of these jobs are filled by women?
+
+
+&lt;img src="index_files/figure-html/unnamed-chunk-7-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Jobs on the Rise
+
+### What is the distribution of experience by job?
+
+&lt;img src="index_files/figure-html/unnamed-chunk-8-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+# Jobs on the Rise
+
+### What is the share of jobs done remotely?
+
+&lt;img src="index_files/figure-html/unnamed-chunk-9-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Jobs on the Rise
+
+### Is there a relationship between median experience and remote share?
+
+&lt;img src="index_files/figure-html/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Jobs on the Rise
+
+Where are the jobs located?
+
+
+|title                               |top_1     |top_2      |top_3      |
+|:-----------------------------------|:---------|:----------|:----------|
+|Talent Acquisition Specialist       |Stockholm |Gothenburg |Malmö      |
+|Business Development Representative |Stockholm |Malmö      |Gothenburg |
+|Data Engineer                       |Stockholm |Gothenburg |Lund       |
+|Career Counsellor                   |Stockholm |Gothenburg |Malmö      |
+|Machine Learning Engineer           |Stockholm |Gothenburg |Uppsala    |
+|Content Coordinator                 |Stockholm |Gothenburg |Malmö      |
+|Back End Developer                  |Stockholm |Gothenburg |Malmö      |
+|Software Account Executive          |Stockholm |Gothenburg |Täby       |
+|Sustainability Manager              |Stockholm |Gothenburg |Malmö      |
+|Digital Manager                     |Stockholm |Gothenburg |Malmö      |
+
+---
+
+# Jobs on the Rise
+
+### What did these workers do prior to current role?
+
+<div id="htmlwidget-dd00413b8713697568e5" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-dd00413b8713697568e5">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"title":["Talent Acquisition Specialist","Business Development Representative","Data Engineer","Career Counsellor","Machine Learning Engineer","Content Coordinator","Back End Developer","Software Account Executive","Sustainability Manager","Digital Manager"],"top_roles_transitioned_from":["Recruiter, Recruitment Consultant, Technical Recruiter","Salesperson, Account Manager, Sales Specialist","Software Engineer, Data Scientist, Business Intelligence Consultant","Guidance Counsellor, Teacher, Salesperson","Data Scientist, Software Engineer, Data Engineer","Content Manager, Project Manager, Copywriter","Software Engineer, Full Stack Engineer, Web Developer","Account Manager, Account Executive, Sales Manager","Project Manager, Environment, Health and Safety Manager, Environmental Coordinator","Project Manager, Digital Marketing Specialist, Account Manager"]},"columns":[{"accessor":"title","name":"title","type":"character","cell":["Talent Acquisition Specialist","Business Development Representative","Data Engineer","Career Counsellor","Machine Learning Engineer","Content Coordinator","Back End Developer","Software Account Executive","Sustainability Manager","Digital Manager"],"header":"title","minWidth":50,"align":"left","headerStyle":{"background":"#f7f7f8"}},{"accessor":"top_roles_transitioned_from","name":"top_roles_transitioned_from","type":"character","cell":["Recruiter, Recruitment Consultant, Technical Recruiter","Salesperson, Account Manager, Sales Specialist","Software Engineer, Data Scientist, Business Intelligence Consultant","Guidance Counsellor, Teacher, Salesperson","Data Scientist, Software Engineer, Data Engineer","Content Manager, Project Manager, Copywriter","Software Engineer, Full Stack Engineer, Web Developer","Account Manager, Account Executive, Sales Manager","Project Manager, Environment, Health and Safety Manager, Environmental Coordinator","Project Manager, Digital Marketing Specialist, Account Manager"],"header":"top roles transitioned from","minWidth":70,"align":"left","headerStyle":{"background":"#f7f7f8"}}],"defaultPageSize":5,"paginationType":"numbers","showPageInfo":true,"minRows":1,"highlight":true,"bordered":true,"dataKey":"7500941036c3aa6cbc239fb1ba3fa69d","key":"7500941036c3aa6cbc239fb1ba3fa69d"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# Talent Migration
+
+### Who goes where?
+
+<div id="htmlwidget-a5829a449f16f9ca3143" style="width:504px;height:360px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a5829a449f16f9ca3143">{"x":{"data":[{"x":[2015,2016,2017,2018,2019,2015,2016,2017,2018,2019,2015,2016,2017,2018,2019,2015,2016,2017,2018,2019],"y":[-1.33,-0.34,0.24,-0.13,-0.32,-0.07,-0.04,0.01,-0.03,-0.03,-0.14,-0.15,-0.09,-0.01,0.14,-0.07,0.02,0.09,-0.2,-0.13],"text":["highlight..........1: 2015<br />highlight..........2: -1.33<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 2","highlight..........1: 2016<br />highlight..........2: -0.34<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 2","highlight..........1: 2017<br />highlight..........2:  0.24<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 2","highlight..........1: 2018<br />highlight..........2: -0.13<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 2","highlight..........1: 2019<br />highlight..........2: -0.32<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 2","highlight..........1: 2015<br />highlight..........2: -0.07<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 6","highlight..........1: 2016<br />highlight..........2: -0.04<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 6","highlight..........1: 2017<br />highlight..........2:  0.01<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 6","highlight..........1: 2018<br />highlight..........2: -0.03<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 6","highlight..........1: 2019<br />highlight..........2: -0.03<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 6","highlight..........1: 2015<br />highlight..........2: -0.14<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 7","highlight..........1: 2016<br />highlight..........2: -0.15<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 7","highlight..........1: 2017<br />highlight..........2: -0.09<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 7","highlight..........1: 2018<br />highlight..........2: -0.01<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 7","highlight..........1: 2019<br />highlight..........2:  0.14<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 7","highlight..........1: 2015<br />highlight..........2: -0.07<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 9","highlight..........1: 2016<br />highlight..........2:  0.02<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 9","highlight..........1: 2017<br />highlight..........2:  0.09<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 9","highlight..........1: 2018<br />highlight..........2: -0.20<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 9","highlight..........1: 2019<br />highlight..........2: -0.13<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 9"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(190,190,190,0.698)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.698)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2015,2016,2017,2018,2019,2015,2016,2017,2018,2019,2015,2016,2017,2018,2019,2015,2016,2017,2018,2019,2015,2016,2017,2018,2019,2015,2016,2017,2018,2019,2015,2016,2017,2018,2019,2015,2016,2017,2018,2019],"y":[0.58,0.87,0.92,1.32,1.1,1.13,1.54,1.18,0.82,0.27,2.45,4.07,4.8,7.22,7.45,1.05,0.8,0.84,0.85,0.82,0.27,1.99,1.72,1.26,0.77,0.52,0.89,1.02,1.01,1.08,1.12,2.03,2.86,2.75,2.2,3.79,2.21,3.07,2.8,1.84],"text":["highlight..........1: 2015<br />highlight..........2:  0.58<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 1","highlight..........1: 2016<br />highlight..........2:  0.87<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 1","highlight..........1: 2017<br />highlight..........2:  0.92<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 1","highlight..........1: 2018<br />highlight..........2:  1.32<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 1","highlight..........1: 2019<br />highlight..........2:  1.10<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 1","highlight..........1: 2015<br />highlight..........2:  1.13<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 3","highlight..........1: 2016<br />highlight..........2:  1.54<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 3","highlight..........1: 2017<br />highlight..........2:  1.18<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 3","highlight..........1: 2018<br />highlight..........2:  0.82<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 3","highlight..........1: 2019<br />highlight..........2:  0.27<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 3","highlight..........1: 2015<br />highlight..........2:  2.45<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 4","highlight..........1: 2016<br />highlight..........2:  4.07<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 4","highlight..........1: 2017<br />highlight..........2:  4.80<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 4","highlight..........1: 2018<br />highlight..........2:  7.22<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 4","highlight..........1: 2019<br />highlight..........2:  7.45<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 4","highlight..........1: 2015<br />highlight..........2:  1.05<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 5","highlight..........1: 2016<br />highlight..........2:  0.80<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 5","highlight..........1: 2017<br />highlight..........2:  0.84<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 5","highlight..........1: 2018<br />highlight..........2:  0.85<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 5","highlight..........1: 2019<br />highlight..........2:  0.82<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 5","highlight..........1: 2015<br />highlight..........2:  0.27<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 8","highlight..........1: 2016<br />highlight..........2:  1.99<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 8","highlight..........1: 2017<br />highlight..........2:  1.72<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 8","highlight..........1: 2018<br />highlight..........2:  1.26<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 8","highlight..........1: 2019<br />highlight..........2:  0.77<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 8","highlight..........1: 2015<br />highlight..........2:  0.52<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 10","highlight..........1: 2016<br />highlight..........2:  0.89<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 10","highlight..........1: 2017<br />highlight..........2:  1.02<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 10","highlight..........1: 2018<br />highlight..........2:  1.01<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 10","highlight..........1: 2019<br />highlight..........2:  1.08<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 10","highlight..........1: 2015<br />highlight..........2:  1.12<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 11","highlight..........1: 2016<br />highlight..........2:  2.03<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 11","highlight..........1: 2017<br />highlight..........2:  2.86<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 11","highlight..........1: 2018<br />highlight..........2:  2.75<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 11","highlight..........1: 2019<br />highlight..........2:  2.20<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 11","highlight..........1: 2015<br />highlight..........2:  3.79<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 12","highlight..........1: 2016<br />highlight..........2:  2.21<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 12","highlight..........1: 2017<br />highlight..........2:  3.07<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 12","highlight..........1: 2018<br />highlight..........2:  2.80<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 12","highlight..........1: 2019<br />highlight..........2:  1.84<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 12"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(190,190,190,0.698)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.698)"}},"hoveron":"points","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2015,2016,2017,2018,2019,null,2015,2016,2017,2018,2019,null,2015,2016,2017,2018,2019,null,2015,2016,2017,2018,2019],"y":[-1.33,-0.34,0.24,-0.13,-0.32,null,-0.07,-0.04,0.01,-0.03,-0.03,null,-0.14,-0.15,-0.09,-0.01,0.14,null,-0.07,0.02,0.09,-0.2,-0.13],"text":["highlight..........1: 2015<br />highlight..........2: -1.33<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 2","highlight..........1: 2016<br />highlight..........2: -0.34<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 2","highlight..........1: 2017<br />highlight..........2:  0.24<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 2","highlight..........1: 2018<br />highlight..........2: -0.13<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 2","highlight..........1: 2019<br />highlight..........2: -0.32<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 2",null,"highlight..........1: 2015<br />highlight..........2: -0.07<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 6","highlight..........1: 2016<br />highlight..........2: -0.04<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 6","highlight..........1: 2017<br />highlight..........2:  0.01<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 6","highlight..........1: 2018<br />highlight..........2: -0.03<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 6","highlight..........1: 2019<br />highlight..........2: -0.03<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 6",null,"highlight..........1: 2015<br />highlight..........2: -0.14<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 7","highlight..........1: 2016<br />highlight..........2: -0.15<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 7","highlight..........1: 2017<br />highlight..........2: -0.09<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 7","highlight..........1: 2018<br />highlight..........2: -0.01<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 7","highlight..........1: 2019<br />highlight..........2:  0.14<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 7",null,"highlight..........1: 2015<br />highlight..........2: -0.07<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 9","highlight..........1: 2016<br />highlight..........2:  0.02<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 9","highlight..........1: 2017<br />highlight..........2:  0.09<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 9","highlight..........1: 2018<br />highlight..........2: -0.20<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 9","highlight..........1: 2019<br />highlight..........2: -0.13<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 9"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.6941)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2015,2016,2017,2018,2019,null,2015,2016,2017,2018,2019,null,2015,2016,2017,2018,2019,null,2015,2016,2017,2018,2019,null,2015,2016,2017,2018,2019,null,2015,2016,2017,2018,2019,null,2015,2016,2017,2018,2019,null,2015,2016,2017,2018,2019],"y":[0.58,0.87,0.92,1.32,1.1,null,1.13,1.54,1.18,0.82,0.27,null,2.45,4.07,4.8,7.22,7.45,null,1.05,0.8,0.84,0.85,0.82,null,0.27,1.99,1.72,1.26,0.77,null,0.52,0.89,1.02,1.01,1.08,null,1.12,2.03,2.86,2.75,2.2,null,3.79,2.21,3.07,2.8,1.84],"text":["highlight..........1: 2015<br />highlight..........2:  0.58<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 1","highlight..........1: 2016<br />highlight..........2:  0.87<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 1","highlight..........1: 2017<br />highlight..........2:  0.92<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 1","highlight..........1: 2018<br />highlight..........2:  1.32<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 1","highlight..........1: 2019<br />highlight..........2:  1.10<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 1",null,"highlight..........1: 2015<br />highlight..........2:  1.13<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 3","highlight..........1: 2016<br />highlight..........2:  1.54<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 3","highlight..........1: 2017<br />highlight..........2:  1.18<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 3","highlight..........1: 2018<br />highlight..........2:  0.82<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 3","highlight..........1: 2019<br />highlight..........2:  0.27<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 3",null,"highlight..........1: 2015<br />highlight..........2:  2.45<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 4","highlight..........1: 2016<br />highlight..........2:  4.07<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 4","highlight..........1: 2017<br />highlight..........2:  4.80<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 4","highlight..........1: 2018<br />highlight..........2:  7.22<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 4","highlight..........1: 2019<br />highlight..........2:  7.45<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 4",null,"highlight..........1: 2015<br />highlight..........2:  1.05<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 5","highlight..........1: 2016<br />highlight..........2:  0.80<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 5","highlight..........1: 2017<br />highlight..........2:  0.84<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 5","highlight..........1: 2018<br />highlight..........2:  0.85<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 5","highlight..........1: 2019<br />highlight..........2:  0.82<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 5",null,"highlight..........1: 2015<br />highlight..........2:  0.27<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 8","highlight..........1: 2016<br />highlight..........2:  1.99<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 8","highlight..........1: 2017<br />highlight..........2:  1.72<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 8","highlight..........1: 2018<br />highlight..........2:  1.26<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 8","highlight..........1: 2019<br />highlight..........2:  0.77<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 8",null,"highlight..........1: 2015<br />highlight..........2:  0.52<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 10","highlight..........1: 2016<br />highlight..........2:  0.89<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 10","highlight..........1: 2017<br />highlight..........2:  1.02<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 10","highlight..........1: 2018<br />highlight..........2:  1.01<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 10","highlight..........1: 2019<br />highlight..........2:  1.08<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 10",null,"highlight..........1: 2015<br />highlight..........2:  1.12<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 11","highlight..........1: 2016<br />highlight..........2:  2.03<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 11","highlight..........1: 2017<br />highlight..........2:  2.86<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 11","highlight..........1: 2018<br />highlight..........2:  2.75<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 11","highlight..........1: 2019<br />highlight..........2:  2.20<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 11",null,"highlight..........1: 2015<br />highlight..........2:  3.79<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 12","highlight..........1: 2016<br />highlight..........2:  2.21<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 12","highlight..........1: 2017<br />highlight..........2:  3.07<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 12","highlight..........1: 2018<br />highlight..........2:  2.80<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 12","highlight..........1: 2019<br />highlight..........2:  1.84<br />highlight..........3: #BEBEBEB2<br />highlight..........group: 12"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(190,190,190,0.6941)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2015,2016,2017,2018,2019],"y":[0.58,0.87,0.92,1.32,1.1],"text":["year: 2015<br />value:  0.58<br />target_country_name: Brazil","year: 2016<br />value:  0.87<br />target_country_name: Brazil","year: 2017<br />value:  0.92<br />target_country_name: Brazil","year: 2018<br />value:  1.32<br />target_country_name: Brazil","year: 2019<br />value:  1.10<br />target_country_name: Brazil"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(166,206,227,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(166,206,227,1)"}},"hoveron":"points","name":"Brazil","legendgroup":"Brazil","showlegend":true,"xaxis":"x2","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(166,206,227,1)","dash":"solid"},"frame":null},{"x":[2015,2016,2017,2018,2019],"y":[-1.33,-0.34,0.24,-0.13,-0.32],"text":["year: 2015<br />value: -1.33<br />target_country_name: Denmark","year: 2016<br />value: -0.34<br />target_country_name: Denmark","year: 2017<br />value:  0.24<br />target_country_name: Denmark","year: 2018<br />value: -0.13<br />target_country_name: Denmark","year: 2019<br />value: -0.32<br />target_country_name: Denmark"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(31,120,180,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(31,120,180,1)"}},"hoveron":"points","name":"Denmark","legendgroup":"Denmark","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(31,120,180,1)","dash":"solid"},"frame":null},{"x":[2015,2016,2017,2018,2019],"y":[1.13,1.54,1.18,0.82,0.27],"text":["year: 2015<br />value:  1.13<br />target_country_name: Finland","year: 2016<br />value:  1.54<br />target_country_name: Finland","year: 2017<br />value:  1.18<br />target_country_name: Finland","year: 2018<br />value:  0.82<br />target_country_name: Finland","year: 2019<br />value:  0.27<br />target_country_name: Finland"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(178,223,138,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(178,223,138,1)"}},"hoveron":"points","name":"Finland","legendgroup":"Finland","showlegend":true,"xaxis":"x2","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(178,223,138,1)","dash":"solid"},"frame":null},{"x":[2015,2016,2017,2018,2019],"y":[2.45,4.07,4.8,7.22,7.45],"text":["year: 2015<br />value:  2.45<br />target_country_name: India","year: 2016<br />value:  4.07<br />target_country_name: India","year: 2017<br />value:  4.80<br />target_country_name: India","year: 2018<br />value:  7.22<br />target_country_name: India","year: 2019<br />value:  7.45<br />target_country_name: India"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(51,160,44,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(51,160,44,1)"}},"hoveron":"points","name":"India","legendgroup":"India","showlegend":true,"xaxis":"x2","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(51,160,44,1)","dash":"solid"},"frame":null},{"x":[2015,2016,2017,2018,2019],"y":[1.05,0.8,0.84,0.85,0.82],"text":["year: 2015<br />value:  1.05<br />target_country_name: Italy","year: 2016<br />value:  0.80<br />target_country_name: Italy","year: 2017<br />value:  0.84<br />target_country_name: Italy","year: 2018<br />value:  0.85<br />target_country_name: Italy","year: 2019<br />value:  0.82<br />target_country_name: Italy"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(251,154,153,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(251,154,153,1)"}},"hoveron":"points","name":"Italy","legendgroup":"Italy","showlegend":true,"xaxis":"x2","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(251,154,153,1)","dash":"solid"},"frame":null},{"x":[2015,2016,2017,2018,2019],"y":[-0.07,-0.04,0.01,-0.03,-0.03],"text":["year: 2015<br />value: -0.07<br />target_country_name: Luxembourg","year: 2016<br />value: -0.04<br />target_country_name: Luxembourg","year: 2017<br />value:  0.01<br />target_country_name: Luxembourg","year: 2018<br />value: -0.03<br />target_country_name: Luxembourg","year: 2019<br />value: -0.03<br />target_country_name: Luxembourg"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(227,26,28,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(227,26,28,1)"}},"hoveron":"points","name":"Luxembourg","legendgroup":"Luxembourg","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(227,26,28,1)","dash":"solid"},"frame":null},{"x":[2015,2016,2017,2018,2019],"y":[-0.14,-0.15,-0.09,-0.01,0.14],"text":["year: 2015<br />value: -0.14<br />target_country_name: Malta","year: 2016<br />value: -0.15<br />target_country_name: Malta","year: 2017<br />value: -0.09<br />target_country_name: Malta","year: 2018<br />value: -0.01<br />target_country_name: Malta","year: 2019<br />value:  0.14<br />target_country_name: Malta"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(253,191,111,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(253,191,111,1)"}},"hoveron":"points","name":"Malta","legendgroup":"Malta","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(253,191,111,1)","dash":"solid"},"frame":null},{"x":[2015,2016,2017,2018,2019],"y":[0.27,1.99,1.72,1.26,0.77],"text":["year: 2015<br />value:  0.27<br />target_country_name: Norway","year: 2016<br />value:  1.99<br />target_country_name: Norway","year: 2017<br />value:  1.72<br />target_country_name: Norway","year: 2018<br />value:  1.26<br />target_country_name: Norway","year: 2019<br />value:  0.77<br />target_country_name: Norway"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(255,127,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(255,127,0,1)"}},"hoveron":"points","name":"Norway","legendgroup":"Norway","showlegend":true,"xaxis":"x2","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(255,127,0,1)","dash":"solid"},"frame":null},{"x":[2015,2016,2017,2018,2019],"y":[-0.07,0.02,0.09,-0.2,-0.13],"text":["year: 2015<br />value: -0.07<br />target_country_name: Switzerland","year: 2016<br />value:  0.02<br />target_country_name: Switzerland","year: 2017<br />value:  0.09<br />target_country_name: Switzerland","year: 2018<br />value: -0.20<br />target_country_name: Switzerland","year: 2019<br />value: -0.13<br />target_country_name: Switzerland"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(202,178,214,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(202,178,214,1)"}},"hoveron":"points","name":"Switzerland","legendgroup":"Switzerland","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(202,178,214,1)","dash":"solid"},"frame":null},{"x":[2015,2016,2017,2018,2019],"y":[0.52,0.89,1.02,1.01,1.08],"text":["year: 2015<br />value:  0.52<br />target_country_name: Turkey","year: 2016<br />value:  0.89<br />target_country_name: Turkey","year: 2017<br />value:  1.02<br />target_country_name: Turkey","year: 2018<br />value:  1.01<br />target_country_name: Turkey","year: 2019<br />value:  1.08<br />target_country_name: Turkey"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(106,61,154,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(106,61,154,1)"}},"hoveron":"points","name":"Turkey","legendgroup":"Turkey","showlegend":true,"xaxis":"x2","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(106,61,154,1)","dash":"solid"},"frame":null},{"x":[2015,2016,2017,2018,2019],"y":[1.12,2.03,2.86,2.75,2.2],"text":["year: 2015<br />value:  1.12<br />target_country_name: United Kingdom","year: 2016<br />value:  2.03<br />target_country_name: United Kingdom","year: 2017<br />value:  2.86<br />target_country_name: United Kingdom","year: 2018<br />value:  2.75<br />target_country_name: United Kingdom","year: 2019<br />value:  2.20<br />target_country_name: United Kingdom"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(255,255,153,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(255,255,153,1)"}},"hoveron":"points","name":"United Kingdom","legendgroup":"United Kingdom","showlegend":true,"xaxis":"x2","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(255,255,153,1)","dash":"solid"},"frame":null},{"x":[2015,2016,2017,2018,2019],"y":[3.79,2.21,3.07,2.8,1.84],"text":["year: 2015<br />value:  3.79<br />target_country_name: United States","year: 2016<br />value:  2.21<br />target_country_name: United States","year: 2017<br />value:  3.07<br />target_country_name: United States","year: 2018<br />value:  2.80<br />target_country_name: United States","year: 2019<br />value:  1.84<br />target_country_name: United States"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(177,89,40,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(177,89,40,1)"}},"hoveron":"points","name":"United States","legendgroup":"United States","showlegend":true,"xaxis":"x2","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(177,89,40,1)","dash":"solid"},"frame":null},{"name":"Brazil","legendgroup":"Brazil","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","mode":"","frame":null},{"name":"Denmark","legendgroup":"Denmark","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","mode":"","frame":null},{"name":"Finland","legendgroup":"Finland","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","mode":"","frame":null},{"name":"India","legendgroup":"India","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","mode":"","frame":null},{"name":"Italy","legendgroup":"Italy","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","mode":"","frame":null},{"name":"Luxembourg","legendgroup":"Luxembourg","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","mode":"","frame":null},{"name":"Malta","legendgroup":"Malta","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","mode":"","frame":null},{"name":"Norway","legendgroup":"Norway","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","mode":"","frame":null},{"name":"Switzerland","legendgroup":"Switzerland","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","mode":"","frame":null},{"name":"Turkey","legendgroup":"Turkey","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","mode":"","frame":null},{"name":"United Kingdom","legendgroup":"United Kingdom","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","mode":"","frame":null},{"name":"United States","legendgroup":"United States","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","mode":"","frame":null},{"x":[2014.8,2019.2],"y":[0,0],"text":"yintercept: 0","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2014.8,2019.2],"y":[0,0],"text":"yintercept: 0","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x2","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":37.9178082191781,"r":7.30593607305936,"b":40.1826484018265,"l":31.4155251141553},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,0.489128071319852],"automargin":true,"type":"linear","autorange":false,"range":[2014.8,2019.2],"tickmode":"array","ticktext":["2015","2016","2017","2018","2019"],"tickvals":[2015,2016,2017,2018,2019],"categoryorder":"array","categoryarray":["2015","2016","2017","2018","2019"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"y","title":"","hoverformat":".2f"},"annotations":[{"text":"Year","x":0.5,"y":0,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"top","annotationType":"axis","yshift":-21.9178082191781},{"text":"Net migration","x":0,"y":0.5,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-90,"xanchor":"right","yanchor":"center","annotationType":"axis","xshift":-16.0730593607306},{"text":"Net recieving countries","x":0.244564035659926,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(255,255,255,1)","family":"","size":11.689497716895},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"Net sending countries","x":0.755435964340074,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(255,255,255,1)","family":"","size":11.689497716895},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"}],"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-1.769,7.889],"tickmode":"array","ticktext":["0","2","4","6"],"tickvals":[0,2,4,6],"categoryorder":"array","categoryarray":["0","2","4","6"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(179,179,179,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":0.489128071319852,"y0":0,"y1":1},{"type":"rect","fillcolor":"rgba(179,179,179,1)","line":{"color":"transparent","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":0.489128071319852,"y0":0,"y1":23.37899543379,"yanchor":1,"ysizemode":"pixel"},{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(179,179,179,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0.510871928680148,"x1":1,"y0":0,"y1":1},{"type":"rect","fillcolor":"rgba(179,179,179,1)","line":{"color":"transparent","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0.510871928680148,"x1":1,"y0":0,"y1":23.37899543379,"yanchor":1,"ysizemode":"pixel"}],"xaxis2":{"type":"linear","autorange":false,"range":[2014.8,2019.2],"tickmode":"array","ticktext":["2015","2016","2017","2018","2019"],"tickvals":[2015,2016,2017,2018,2019],"categoryorder":"array","categoryarray":["2015","2016","2017","2018","2019"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"domain":[0.510871928680148,1],"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"y","title":"","hoverformat":".2f"},"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"55d831f1b9b":{"x":{},"y":{},"colour":{},"type":"scatter"},"55d8b2f589d":{"x":{},"y":{},"colour":{}},"55d824c814c7":{"x":{},"y":{},"colour":{}},"55d8752a7c57":{"x":{},"y":{},"colour":{}},"55d817239a0":{"x":{},"y":{},"colour":{},"label":{}},"55d8442776d9":{"yintercept":{}}},"cur_data":"55d831f1b9b","visdat":{"55d831f1b9b":["function (y) ","x"],"55d8b2f589d":["function (y) ","x"],"55d824c814c7":["function (y) ","x"],"55d8752a7c57":["function (y) ","x"],"55d817239a0":["function (y) ","x"],"55d8442776d9":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

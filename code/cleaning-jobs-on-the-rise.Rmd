@@ -1,0 +1,60 @@
+---
+title: "cleaning-jobs-on-the-rise"
+author: "JJayes"
+date: "16/03/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+df <- readtext::readtext("data/Sweden_top_growing_jobs.txt", encoding = "UTF-8")
+
+titles <- df$text %>% as_tibble() %>% 
+    separate_rows(value, sep = "\\n") %>% 
+    mutate(title = str_detect(value, "[0-9]\\. ")) %>% 
+    filter(title == TRUE)
+
+text <- df$text %>% as_tibble() %>% 
+    separate_rows(value, sep = "\\n") %>% 
+    mutate(title = str_detect(value, "[0-9]\\. ")) %>%
+    filter(!str_detect(value, "See open jobs")) %>% 
+    filter(str_detect(value, "What they do"))
+
+titles <- titles %>% 
+    select(value) %>% 
+    rename(title = value)
+
+text <- text %>% 
+    select(value) %>% 
+    rename(text = value)
+
+
+df <- titles %>% 
+    bind_cols(text) %>% 
+    mutate(rank = parse_number(title),
+           title = str_remove(title, "[0-9]\\.|10\\."),
+           title = str_squish(title))
+
+df <- df %>% 
+    separate_rows(text, sep =  "\\|") %>% 
+    mutate(text = str_squish(text)) %>% 
+    separate(text, into = c("key", "value"), sep = "\\:") %>% 
+    mutate(value = str_squish(value)) %>% 
+    pivot_wider(names_from = key, values_from = value)
+
+df <- df %>% 
+    janitor::clean_names()
+
+df <- df %>% 
+    mutate(experience = coalesce(median_years_of_prior_experience, median_years_of_experience),
+           experience = parse_number(experience),
+           remote_job_availability = parse_number(remote_job_availability) / 100) %>% 
+    select(!contains("median"))
+
+
+# df %>% write_rds("data/jobs_on_the_rise.rds")
+```
+

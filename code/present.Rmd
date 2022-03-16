@@ -1,0 +1,61 @@
+---
+title: "present"
+author: "JJayes"
+date: "16/03/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, message = F, warning = F)
+```
+
+
+```{r}
+library(tidyverse)
+```
+
+# What extent of the Swedish labour market do Arbetsformedling's job ads cover?
+
+We want to know whether the job ads on Arbetsformedlingen's Platsbanken are representative of the entire Swedish labour market?
+
+One way to establish this we can look at another source of job adverts in Sweden and compare the contents of these adverts.
+
+We will use data from the social networking site [LinkedIn]()
+
+## Where do we get the data?
+
+### 2 sources:
+
+.pull-left[
+
+```{r}
+knitr::include_graphics("slides/jobs_on_the_rise.PNG")
+```
+
+.center[[LinkedIn Jobs on the Rise Reports](https://www.linkedin.com/pulse/linkedin-jobs-rise-2022-10-roles-growing-demand-sweden-/?published=t&trackingId=GHuAReROU0NEoNaBrna3Zg%3D%3D)]
+
+]
+
+.pull-right[
+
+```{r}
+knitr::include_graphics("slides/WB_linkedin.PNG")
+```
+
+
+.center[[World Bank LinkedIn Digital Data for Development](https://linkedindata.worldbank.org/data)]
+
+]
+
+
+Definitions:
+
+<blockquote>
+
+The Industry Skills Needs metric captures which skills are most likely to be added to a member's profile in one industry compared to other industries. It's calculated using an adapted version of a text mining technique called Term Frequency - Inverse Document Frequency (TF-IDF). This method gives more weight to a skill for an industry if more members in the industry list the skill on their profiles and the skill is more unique to the industry. The skills included are those added while a member holds a particular occupation (the skill flow approach). While the skill flow approach creates a trade-off whereby long-held basic skills, such as Microsoft Office being given a lesser weight, the approach is shown to be stronger at identifying the latest emerging skills in a specific industry than including all historical skills that are added during prior occupations. On balance, since the objective of this metric is to detect the latest skills needs, a skill flow approach is adopted.
+
+</blockquote>
+
+
+
+

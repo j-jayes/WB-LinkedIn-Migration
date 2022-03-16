@@ -1,0 +1,265 @@
+---
+title: "Untitled"
+author: "JJayes"
+date: "15/03/2022"
+output: html_document
+---
+
+# Linkedin sweden top growing jobs
+
+Data from [LinkedIn Jobs on the Rise 2022: The 10 roles that are growing in demand in Sweden](https://www.linkedin.com/pulse/linkedin-jobs-rise-2022-10-roles-growing-demand-sweden-/?published=t&trackingId=GHuAReROU0NEoNaBrna3Zg%3D%3D)
+
+```{r}
+df  <- read_rds("data/jobs_on_the_rise.rds")
+```
+
+
+
+```{r}
+df %>% reactable::reactable()
+
+```
+
+## Plot of gender breakdown
+
+```{r}
+library(ggtext)
+
+df %>%
+  select(title, current_gender_distribution) %>%
+  separate(current_gender_distribution, into = c("Female", "Male"), sep = "\\;|,") %>%
+  mutate(across(c("Female", "Male"), parse_number)) %>%
+  mutate(title = fct_reorder(title, Female)) %>%
+  pivot_longer(-title) %>%
+  ggplot(aes(value, title, fill = name)) +
+  geom_col() +
+  scale_x_continuous(labels = scales::percent_format(scale = 1)) +
+  scale_fill_manual(
+    name = NULL,
+    values = c(Female = "#0072B2", Male = "#009E73"),
+    labels = c(
+      Female = "<p style='color:#0072B2'>Female</p>",
+      Male = "<p style='color:#009E73'>Male</p>"
+    )
+  ) +
+  labs(
+    x = "Gender split in job",
+    y = NULL,
+    fill = NULL,
+    title = "**LinkedIn Jobs on the Rise**  
+    <span style='font-size:11pt'>Gender split for 
+    <span style='color:#009E73;'>**males**</span> and
+    <span style='color:#0072B2;'>**females**</span> by job
+    </span>"
+  ) +
+  theme(
+    plot.title = element_markdown(lineheight = 1.1),
+    legend.text = element_markdown(size = 11),
+    legend.position = "none"
+  )
+
+```
+
+
+## experience
+
+```{r}
+df %>%
+  mutate(title = fct_reorder(title, experience)) %>%
+  ggplot(aes(x = experience, title)) +
+  geom_segment(aes(xend = 0, yend = title)) +
+  geom_point(cex = 4, colour = "darkred") +
+  labs(x = "Median years of experience",
+       y = NULL,
+       title = "Median years of experience by job",
+       caption = "Source: LinkedIn Jobs on the Rise 2022")
+
+```
+
+## Remote
+
+```{r}
+df %>%
+  mutate(title = fct_reorder(title, remote_job_availability)) %>%
+  ggplot(aes(remote_job_availability, title)) +
+  geom_segment(aes(xend = 0, yend = title)) +
+  geom_point(cex = 4, colour = "Orange") +
+  scale_x_continuous(labels = scales::percent_format()) +
+  labs(
+    x = "Percentage of jobs available as remote",
+    y = NULL,
+    title = "Share of jobs which are remote",
+    caption = "Source: LinkedIn Jobs on the Rise 2022"
+  )
+```
+
+### Compare experience and remote
+
+```{r}
+library(ggrepel)
+
+df %>% 
+    mutate(rank = factor(rank)) %>% 
+    ggplot(aes(experience, remote_job_availability)) +
+    geom_smooth(method = "lm", se = F) +
+    geom_point(aes(colour = rank), cex = 4) +
+    geom_text_repel(aes(label = title), vjust = .5) +
+    scale_color_viridis_d(direction = -1) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    expand_limits(x = 0, y = 0) +
+    labs(x = "Median number of years of experience",
+         y = "Percentage of jobs available as remote",
+         colour = "Rank in Jobs\non the Rise")
+```
+
+
+## Locations
+
+```{r}
+df %>% 
+    separate(top_locations_hiring, into = str_c("top_locations_hiring_", 1:3), sep = ",") %>% 
+    mutate(across(contains("top_locations"), str_squish)) %>% 
+    select(title, contains("top_locations")) %>% 
+    knitr::kable()
+```
+
+Map of locations
+1. Geocode
+```{r}
+df_locations <- df %>% 
+    select(top_locations_hiring) %>% 
+    separate_rows(top_locations_hiring, sep = ", ") %>% 
+    count(top_locations_hiring)
+
+df_locations <- df_locations %>% 
+    mutate(location = str_c(top_locations_hiring, ", Sweden"))
+
+library(tidygeocoder)
+
+locations <- tidygeocoder::geocode(df_locations, address = "location")
+```
+
+2. Map
+```{r}
+# prep for lable
+
+df_location_names <- df %>% 
+    select(title, top_locations_hiring) %>% 
+    separate_rows(top_locations_hiring, sep = ", ") %>% 
+    group_by(top_locations_hiring) %>% 
+    count(title) %>% 
+    ungroup() %>% 
+    select(-n)
+
+
+get_jobs <- function(location){
+    
+    df_location_names %>% 
+        filter(top_locations_hiring == location) %>% 
+        pull(title) %>% 
+        paste0(., collapse = "<br>")
+    
+}
+
+df_location_names <- df_location_names %>% 
+    distinct(top_locations_hiring) %>% 
+    mutate(titles_by_city = map(top_locations_hiring, get_jobs)) %>% 
+    unnest(titles_by_city)
+
+map_locations <- locations %>% 
+    inner_join(df_location_names)
+
+library(leaflet)
+pal <- colorNumeric(
+  palette = "Spectral",
+  domain = locations$n,
+  reverse = T
+)
+
+map_locations_tabs <- map_locations %>% 
+    rename(n_jobs = n) %>% 
+    gather(key, value,
+           location, n_jobs, titles_by_city) %>% 
+    mutate(key = str_to_title(str_replace_all(key, "_", " ")),
+           key = paste0("<b>", key, "</b>")) %>% 
+    nest(data = c(key, value)) %>% 
+    mutate(html = map(data, knitr::kable,
+                      format = "html",
+                      escape = F,
+                      col.names = c("", "")))
+
+# map_locations_tabs %>% 
+#     write_rds("data/jobs_on_the_rise_map.rds")
+
+map_locations_tabs %>% 
+    inner_join(locations %>% select(top_locations_hiring, n)) %>% 
+    
+      leaflet(width = 800, height = 500) %>%
+      setView(lng = 14.1618,
+              lat = 57.7826,
+              zoom = 6) %>% 
+      addProviderTiles("CartoDB.Positron") %>% 
+  addCircleMarkers(
+      lat = ~ lat,
+      lng = ~ long,
+    radius = ~ n*3,
+    popup = ~ html,
+    color = ~pal(n)
+  ) %>% 
+  addLegend("bottomright", pal = pal, values = ~ n,
+    title = "Number of total vacancies",
+    labFormat = labelFormat(),
+    opacity = 1
+  )
+    
+```
+
+
+## Skills
+
+```{r}
+df %>% 
+    select(title, most_common_skills) %>% 
+    separate_rows(most_common_skills, sep = ",") %>% 
+    mutate(most_common_skills = str_squish(most_common_skills)) %>% 
+    group_by(title) %>% 
+    mutate(rn = str_c("skill_", row_number())) %>% 
+    ungroup() %>% 
+    pivot_wider(names_from = rn, values_from = most_common_skills) %>% 
+    knitr::kable()
+```
+
+
+# WB Linkedin industry skill needs
+
+```{r}
+library(tidyverse)
+
+df <- readxl::read_excel("data/public_use-industry-skills-needs.xlsx", sheet = 4)
+
+```
+
+Where are foreing language skills in demand?
+
+```{r}
+library(htmltools)
+
+
+df %>%
+  filter(skill_group_name == "Foreign Languages") %>%
+  select(isic_section_name, industry_name, skill_group_rank) %>%
+  reactable(
+    filterable = T,
+    columns = list(
+      skill_group_rank = colDef(
+        name = "Skill group rank", filterable = FALSE,
+        header = function(value) {
+          tags$a(href = "https://wikipedia.org/wiki/List_of_Iris_species", title = "Iris species", value)
+        }
+      )
+    )
+  )
+
+```
+
+

@@ -30,6 +30,18 @@ To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authorin
 You can embed Shiny inputs and outputs in your document. Outputs are automatically updated whenever inputs change.  This demonstrates how a standard R plot can be made interactive by wrapping it in the Shiny `renderPlot` function. The `selectInput` and `sliderInput` functions create the input widgets used to drive the plot.
 
 ```{r eruptions, echo=FALSE}
+
+
+ui <- fluidPage(
+  titlePanel("title panel"),
+
+  sidebarLayout(
+    sidebarPanel("sidebar panel"),
+    mainPanel("main panel")
+    
+  )
+)
+
 inputPanel(
   selectizeInput("country", label = "Country:",
             choices = unique(df$base_country_name), 
@@ -37,7 +49,7 @@ inputPanel(
             multiple = F),
   
   sliderInput("n_comparisons", label = "Number of Comparison Countries:",
-            min = 1, max = 12, value = 5, step = 1)
+            min = 1, max = 8, value = 4, step = 1)
 )
 
 # renderPlot({
@@ -64,29 +76,25 @@ inputPanel(
 
 
 ```{r}
-renderPlotly({
-
-  g <- df %>% 
+renderPlot({
+  
+  df_plot <- df %>% 
     filter(base_country_name == input$country) %>% 
-    mutate(sign = if_else(net_per_10K_total > 0, "Net sending countries", "Net recieving countries")) %>% 
-    group_by(sign) %>% 
-    mutate(rank = rank(desc((net_per_10K_total)^2))) %>% 
-    ungroup() %>%
-    filter(rank <= 5) %>% 
-    select(- net_per_10K_total) %>% 
-    pivot_longer(net_per_10K_2015:net_per_10K_2019, names_to = "metric") %>% 
-    mutate(year = parse_number(str_remove(metric, "net_per_10K_"))) %>% 
-    ggplot(aes(year, value, colour = target_country_name)) +
-    geom_point() +
-    geom_line() +
-    facet_wrap(~ sign) +
-    scale_color_brewer(palette = "Paired") +
-    geom_hline(yintercept = 0, lty = 2) +
-    labs(x = "Year",
-         y = glue("Net migration to {input$country}"))
-   
-   ggplotly(g)
-})
+    arrange(net_per_10K_total) %>% 
+    mutate(index = row_number())
+
+  df_plot %>% 
+    mutate(abs = abs(net_per_10K_total),
+           sign = if_else(net_per_10K_total > 0, "Net immigration from", "Net migration to")) %>% 
+    slice_max(abs, n= 15) %>% 
+    mutate(target_country_name = fct_reorder(target_country_name, net_per_10K_total)) %>% 
+    ggplot(aes(net_per_10K_total, target_country_name, fill = sign)) +
+    geom_col() +
+    scale_fill_manual(values = c("#fc8d59", "#91bfdb")) +
+    theme(legend.position = "bottom")
+
+})  
+
 
 
 # df %>% 
@@ -149,22 +157,29 @@ renderPlot({
 
 
 ```{r}
-renderPlot({
-  
-  df_plot <- df %>% 
+renderPlotly({
+
+  g <- df %>% 
     filter(base_country_name == input$country) %>% 
-    arrange(net_per_10K_total) %>% 
-    mutate(index = row_number())
-
-  df_plot %>% 
-    mutate(abs = abs(net_per_10K_total),
-           sign = if_else(net_per_10K_total > 0, "Net immigration from", "Net migration to")) %>% 
-    slice_max(abs, n= 10) %>% 
-    mutate(target_country_name = fct_reorder(target_country_name, net_per_10K_total)) %>% 
-    ggplot(aes(net_per_10K_total, target_country_name, fill = sign)) +
-    geom_col()
-
-})  
+    mutate(sign = if_else(net_per_10K_total > 0, "Net sending countries", "Net recieving countries")) %>% 
+    group_by(sign) %>% 
+    mutate(rank = rank(desc((net_per_10K_total)^2))) %>% 
+    ungroup() %>%
+    filter(rank <= input$n_comparisons) %>% 
+    select(- net_per_10K_total) %>% 
+    pivot_longer(net_per_10K_2015:net_per_10K_2019, names_to = "metric") %>% 
+    mutate(year = parse_number(str_remove(metric, "net_per_10K_"))) %>% 
+    ggplot(aes(year, value, colour = target_country_name)) +
+    geom_point() +
+    geom_line() +
+    facet_wrap(~ sign, nrow = 1) +
+    scale_color_brewer(palette = "Paired") +
+    geom_hline(yintercept = 0, lty = 2) +
+    labs(x = "Year",
+         y = glue("Net migration to {input$country}"))
+   
+   ggplotly(g)
+})
 
 ```
 

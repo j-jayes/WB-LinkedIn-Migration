@@ -1,0 +1,32 @@
+1. Talent Acquisition Specialist
+Similar titles include Talent Acquisition Manager or Recruiting Specialist.
+What they do: Talent acquisition specialists focus on long-term strategy to attract, source, hire and onboard new talent within an organisation. | Most common skills: Employer Branding, Recruiting, Sourcing | Top locations hiring: Stockholm, Gothenburg, Malmö | Current gender distribution: 76.1% female; 23.9% male | Median years of prior experience: 6.3 | Top roles transitioned from: Recruiter, Recruitment Consultant, Technical Recruiter | Remote job availability: 8.5%
+See open jobs | Learn how to use employer branding to attract talent (free course)
+2. Business Development Representative
+What they do: Business development representatives are usually early-career salespeople responsible for identifying and reaching out to prospective clients. | Most common skills: Business-to-Business (B2B), Sales, Software as a Service (SaaS) | Top locations hiring: Stockholm, Malmö, Gothenburg | Current gender distribution: 38.3% female; 61.7% male | Median years of prior experience: 5.4 | Top roles transitioned from: Salesperson, Account Manager, Sales Specialist | Remote job availability: 15.5%
+See open jobs | Learn the foundations of business development (free course)
+3. Data Engineer
+What they do: Data engineers build the infrastructure to transform raw data into useful forms for analytical or operational uses. | Most common skills: Data Engineering, Apache Spark, Scala | Top locations hiring: Stockholm, Gothenburg, Lund | Current gender distribution: 20.5% female, 79.5% male | Median years of prior experience: 6.3 | Top roles transitioned from: Software Engineer, Data Scientist, Business Intelligence Consultant | Remote job availability: 15.2%
+See open jobs | See relevant courses in data engineering, including Become a data engineer
+4. Career Counsellor
+Similar titles include Careers Advisor, etc.
+What they do: Career counsellors work with people who have questions about different careers and educational paths, using a range of tools to help their clients find the right role. | Most common skills: Coaching, Career Development, Organisational Development | Top locations hiring: Stockholm, Gothenburg, Malmö | Current gender distribution: 71.8% female; 28.2% male | Median years of experience: 6.6 | Top roles transitioned from: Guidance Counsellor, Teacher, Salesperson | Remote job availability: 0.0%
+See open jobs
+5. Machine Learning Engineer
+What they do: Machine learning engineers develop and implement self-running artificial intelligence algorithms and systems for products and applications. | Most common skills: Machine Learning, TensorFlow, Deep Learning | Top locations hiring: Stockholm, Gothenburg, Uppsala | Current gender distribution: 17.4% female; 82.6% male | Median years of prior experience: 3.5 | Top roles transitioned from: Data Scientist, Software Engineer, Data Engineer | Remote job availability: 4.9%
+See open jobs | Learn how to become a machine learning specialist (free learning path)
+6. Content Coordinator
+Similar titles include Content Designer, Brand Designer, etc.
+What they do: Content coordinators work on websites and apps to create, evaluate, update and review content at all stages of the end-to-end user journey. | Most common skills: Copywriting, Digital Marketing, Social Media | Top locations hiring: Stockholm, Gothenburg, Malmö | Current gender distribution: 68.8% female; 31.2% male | Median years of experience: 5.8 | Top roles transitioned from: Content Manager, Project Manager, Copywriter | Remote job availability: 4.3%
+See open jobs
+7.  Back End Developer
+What they do: Back end developers build and code the server-side technology that powers front-end web and mobile applications. | Most common skills: Git, Docker Products, Amazon Web Services (AWS) | Top locations hiring: Stockholm, Gothenburg, Malmö | Current gender distribution: 16.1% female; 83.9% male | Median years of prior experience: 5.9 | Top roles transitioned from: Software Engineer, Full Stack Engineer, Web Developer | Remote job availability: 11.8%
+See open jobs | Learn how to become a back-end web developer (free learning path)
+8. Software Account Executive
+What they do: Software account executives are sales professionals who specialise in the marketing of software tools. | Most common skills: Solution Selling, Software as a Service (SaaS), Enterprise Software | Top locations hiring: Stockholm, Gothenburg, Täby | Current gender distribution: 26.6% female; 73.4% male | Median years of prior experience: 14.4 | Top roles transitioned from: Account Manager, Account Executive, Sales Manager | Remote job availability: 21.0%
+See open jobs
+9. Sustainability Manager
+What they do: Sustainability managers analyse and forecast the environmental impact of an organisation and its activities, aiming to oversee and implement effective sustainability strategies. | Most common skills: Sustainable Development, Sustainability Reporting, Corporate Social Responsibility | Top locations hiring: Stockholm, Gothenburg, Malmö | Current gender distribution: 73.1% female; 26.9% male | Median years of experience: 6.6 | Top roles transitioned from: Project Manager, Environment, Health and Safety Manager, Environmental Coordinator | Remote job availability: 2.6%
+See open jobs | See relevant courses on sustainability
+10. Digital Manager
+What they do: Digital managers are in charge of planning, budgeting and initiating digital accounts and projects and as such oversee resources, clients and teams. | Most common skills: Digital Strategy, Google Analytics, Digital Marketing | Top locations hiring: Stockholm, Gothenburg, Malmö | Current gender distribution: 44.0% female; 56.0% male | Median years of experience: 8.7 | Top roles transitioned from: Project Manager, Digital Marketing Specialist, Account Manager | Remote job availability: 1.2%
