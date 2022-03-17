@@ -12,40 +12,91 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F)
 
 ```{r}
 library(tidyverse)
+library(knitr)
+library(reactable)
 ```
 
 # What extent of the Swedish labour market do Arbetsformedling's job ads cover?
 
-We want to know whether the job ads on Arbetsformedlingen's Platsbanken are representative of the entire Swedish labour market?
+We want to know whether the job ads on Arbetsformedlingen's Platsbanken are representative of the entire Swedish labour market.
 
-One way to establish this we can look at another source of job adverts in Sweden and compare the contents of these adverts.
+One way to establish this we can look at another source of job data in Sweden and compare the contents of these adverts.
 
-We will use data from the social networking site [LinkedIn]()
-
-## Where do we get the data?
-
-### 2 sources:
-
-.pull-left[
-
-```{r}
-knitr::include_graphics("slides/jobs_on_the_rise.PNG")
-```
-
-.center[[LinkedIn Jobs on the Rise Reports](https://www.linkedin.com/pulse/linkedin-jobs-rise-2022-10-roles-growing-demand-sweden-/?published=t&trackingId=GHuAReROU0NEoNaBrna3Zg%3D%3D)]
-
-]
-
-.pull-right[
-
-```{r}
-knitr::include_graphics("slides/WB_linkedin.PNG")
+```{r, fig.cap="Overlap in job data"}
+# include_graphics("slides/slide-diagram.jpg")
 ```
 
 
-.center[[World Bank LinkedIn Digital Data for Development](https://linkedindata.worldbank.org/data)]
+## Data sources
 
-]
+We will use data from the social networking site [LinkedIn](https://www.linkedin.com/). There are two sources of information that we will examine, the first is focussed on Sweden specifically, while the second is aggregated data from all of the countries in which LinkedIn operates. The first source is called the [LinkedIn Jobs on the Rise 2022 Report](https://www.linkedin.com/pulse/linkedin-jobs-rise-2022-10-roles-growing-demand-sweden-/) covering the 10 roles that are growing in demand in Sweden.
+
+## Jobs on the Rise
+
+This report measures the job titles "experiencing the highest growth rates from January 2017 through July 2021". It also provides information about the people who fill these jobs with these titles currently, based on the infomation on LinkedIn.
+
+### What are the fastest growing jobs?
+
+The report states that these 10 are the fastest growing jobs in Sweden.
+
+```{r}
+df <- read_rds("data/jobs_on_the_rise.rds")
+
+
+df %>%
+  select(rank, title) %>%
+  reactable::reactable(
+    columns = list(
+      title = colDef(name = "Title"),
+      rank = colDef(name = "Rank", maxWidth = 100)
+    ),
+    bordered = TRUE,
+    highlight = TRUE
+  )
+```
+
+
+### What are skills for these jobs?
+
+```{r}
+df %>%
+  select(title, most_common_skills) %>%
+  separate_rows(most_common_skills, sep = ",") %>%
+  mutate(most_common_skills = str_squish(most_common_skills)) %>%
+  group_by(title) %>%
+  mutate(rn = str_c("Skill_", row_number())) %>%
+  ungroup() %>%
+  pivot_wider(names_from = rn, values_from = most_common_skills) %>% 
+  reactable::reactable(
+      # height = 500,
+      defaultPageSize = 10,
+    defaultColDef = colDef(
+      header = function(value) gsub("_", " ", value, fixed = TRUE),
+      cell = function(value) format(value, nsmall = 1),
+      align = "left",
+      minWidth = 70,
+      headerStyle = list(background = "#f7f7f8")
+    ),
+    columns = list(
+      title = colDef(minWidth = 140,
+                     align = "left") # overrides the default
+    ),
+    bordered = TRUE,
+    highlight = TRUE
+  )
+```
+
+
+
+### Methodology
+
+The methodology section of the report states that:
+
+<blockquote>
+
+LinkedIn Economic Graph researchers examined millions of jobs started by LinkedIn members from 1 January 2017 to 31 July 2021 to calculate a growth rate for each job title. To be ranked, a job title needed to see consistent growth across our membership base, as well as have grown to a meaningful size by 2021. Identical job titles across different seniority levels were grouped and ranked together. Internships, volunteer positions, interim roles and student roles were excluded, and jobs where hiring was dominated by a small handful of companies in each country were also excluded.
+
+</blockquote>
 
 
 Definitions:

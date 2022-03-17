@@ -1,0 +1,320 @@
+---
+title: "LinkedIn Data Comparison"
+subtitle: "Work in progress"
+author: "Jonathan Jayes"
+date: "[Forte Research Group](https://interludeone.com/) `r format(Sys.time(), '%d %B, %Y')`"
+output:
+  xaringan::moon_reader:
+    seal: true
+    css: [default, metropolis, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumberFormat: "%current%"
+      
+---
+
+```{r, echo=F, message=F, warning=F}
+# options(htmltools.dir.version = FALSE)
+library(knitr)
+opts_chunk$set(
+  fig.align="center",  
+  fig.height=5, 
+  dev = "svg",
+  #fig.width=6,
+  # out.width="748px", #out.length="520.75px",
+  # dpi=300, #fig.path='Figs/',
+  cache=F, echo=F, warning=F, message=F
+)
+library(hrbrthemes)
+library(fontawesome)
+library(xaringan)
+library(xaringanExtra)
+library(tidyverse)
+library(reactable)
+# library(here)
+library(xaringanthemer)
+xaringanExtra::use_panelset()
+theme_set(theme_light())
+```
+
+```{r}
+xaringanExtra::use_progress_bar(color = "#EB821D", location = "top", height = "5px")
+```
+
+# LinkedIn Data
+
+.pull-left[
+
+How does it differ from Arbetsformedlingen data?
+
+Who does it cover, what kinds of jobs?
+
+Specifically last week we were asked about the top skills - would English and Swedish be up there?
+
+]
+
+
+---
+
+# Where do we get the data?
+
+### 2 sources:
+
+.pull-left[
+
+```{r}
+knitr::include_graphics("slides/jobs_on_the_rise.PNG")
+```
+
+.center[[LinkedIn Jobs on the Rise Reports](https://www.linkedin.com/pulse/linkedin-jobs-rise-2022-10-roles-growing-demand-sweden-/?published=t&trackingId=GHuAReROU0NEoNaBrna3Zg%3D%3D)]
+
+]
+
+.pull-right[
+
+```{r}
+knitr::include_graphics("slides/WB_linkedin.PNG")
+```
+
+
+.center[[World Bank LinkedIn Digital Data for Development](https://linkedindata.worldbank.org/data)]
+
+]
+
+---
+
+# Jobs on the Rise
+
+### What are the fastest growing jobs?
+
+The report [Jobs on the Rise 2022](https://business.linkedin.com/talent-solutions/resources/talent-acquisition/jobs-on-the-rise-sweden-cont-fact) says that these 10 are the fastest growing jobs in Sweden.
+
+```{r}
+df <- read_rds("data/jobs_on_the_rise.rds")
+
+
+df %>% 
+    select(rank, title) %>% 
+    knitr::kable(col.names = c("Rank", "Title"))
+```
+
+
+---
+
+# Jobs on the Rise
+
+### What are skills for these jobs?
+
+```{r}
+df %>%
+  select(title, most_common_skills) %>%
+  separate_rows(most_common_skills, sep = ",") %>%
+  mutate(most_common_skills = str_squish(most_common_skills)) %>%
+  group_by(title) %>%
+  mutate(rn = str_c("Skill_", row_number())) %>%
+  ungroup() %>%
+  pivot_wider(names_from = rn, values_from = most_common_skills) %>% 
+  reactable::reactable(
+      # height = 500,
+      defaultPageSize = 5,
+    defaultColDef = colDef(
+      header = function(value) gsub("_", " ", value, fixed = TRUE),
+      cell = function(value) format(value, nsmall = 1),
+      align = "center",
+      minWidth = 70,
+      headerStyle = list(background = "#f7f7f8")
+    ),
+    columns = list(
+      title = colDef(minWidth = 140,
+                     align = "left") # overrides the default
+    ),
+    bordered = TRUE,
+    highlight = TRUE
+  )
+```
+
+
+---
+
+# Jobs on the Rise
+
+### What share of these jobs are filled by women?
+
+
+```{r}
+library(ggtext)
+
+df %>%
+  select(title, current_gender_distribution) %>%
+  separate(current_gender_distribution, into = c("Female", "Male"), sep = "\\;|,") %>%
+  mutate(across(c("Female", "Male"), parse_number)) %>%
+  mutate(title = fct_reorder(title, Female)) %>%
+  pivot_longer(-title) %>%
+  ggplot(aes(value, title, fill = name)) +
+  geom_col() +
+  scale_x_continuous(labels = scales::percent_format(scale = 1)) +
+  scale_fill_manual(
+    name = NULL,
+    values = c(Female = "#0072B2", Male = "#009E73"),
+    labels = c(
+      Female = "<p style='color:#0072B2'>Female</p>",
+      Male = "<p style='color:#009E73'>Male</p>"
+    )
+  ) +
+  labs(
+    x = "Gender split in job",
+    y = NULL,
+    fill = NULL,
+    title = "**LinkedIn Jobs on the Rise**  
+    <span style='font-size:11pt'>Gender split for 
+    <span style='color:#009E73;'>**males**</span> and
+    <span style='color:#0072B2;'>**females**</span> by job
+    </span>"
+  ) +
+  theme(
+    plot.title = element_markdown(lineheight = 1.1),
+    legend.text = element_markdown(size = 11),
+    legend.position = "none"
+  )
+
+```
+
+---
+
+# Jobs on the Rise
+
+### What is the distribution of experience by job?
+
+```{r}
+df %>%
+  mutate(title = fct_reorder(title, experience)) %>%
+  ggplot(aes(x = experience, title)) +
+  geom_segment(aes(xend = 0, yend = title)) +
+  geom_point(cex = 4, colour = "darkred") +
+  labs(x = "Median years of experience",
+       y = NULL,
+       title = "Median years of experience by job",
+       caption = "Source: LinkedIn Jobs on the Rise 2022")
+```
+
+---
+# Jobs on the Rise
+
+### What is the share of jobs done remotely?
+
+```{r}
+df %>%
+  mutate(title = fct_reorder(title, remote_job_availability)) %>%
+  ggplot(aes(remote_job_availability, title)) +
+  geom_segment(aes(xend = 0, yend = title)) +
+  geom_point(cex = 4, colour = "Orange") +
+  scale_x_continuous(labels = scales::percent_format()) +
+  labs(
+    x = "Percentage of jobs available as remote",
+    y = NULL,
+    title = "Share of jobs which are remote",
+    caption = "Source: LinkedIn Jobs on the Rise 2022"
+  )
+```
+
+---
+
+# Jobs on the Rise
+
+### Is there a relationship between median experience and remote share?
+
+```{r, fig.height=4.5}
+library(ggrepel)
+
+df %>% 
+    mutate(rank = factor(rank)) %>% 
+    ggplot(aes(experience, remote_job_availability)) +
+    geom_smooth(method = "lm", se = F) +
+    geom_point(aes(colour = rank), cex = 4) +
+    geom_text_repel(aes(label = title), vjust = .5) +
+    scale_color_viridis_d(direction = -1) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    expand_limits(x = 0, y = 0) +
+    labs(x = "Median number of years of experience",
+         y = "Percentage of jobs available as remote",
+         colour = "Rank in Jobs\non the Rise")
+```
+
+---
+
+# Jobs on the Rise
+
+Where are the jobs located?
+
+```{r}
+df %>% 
+    separate(top_locations_hiring, into = str_c("top_", 1:3), sep = ",") %>% 
+    mutate(across(contains("top_"), str_squish)) %>% 
+    select(title, top_1, top_2, top_3) %>% 
+    knitr::kable()
+```
+
+---
+
+# Jobs on the Rise
+
+### What did these workers do prior to current role?
+
+```{r}
+df %>% 
+    select(title, top_roles_transitioned_from) %>% 
+      reactable::reactable(
+      # height = 500,
+      defaultPageSize = 5,
+    defaultColDef = colDef(
+      header = function(value) gsub("_", " ", value, fixed = TRUE),
+      cell = function(value) format(value, nsmall = 1),
+      align = "left",
+      minWidth = 70,
+      headerStyle = list(background = "#f7f7f8")
+    ),
+    columns = list(
+      title = colDef(minWidth = 50) # overrides the default
+    ),
+    bordered = TRUE,
+    highlight = TRUE
+  )
+```
+
+---
+
+# Talent Migration
+
+### Who goes where?
+
+```{r}
+df <- read_rds("skilled-migration/df.rds")
+
+library(ggiraph)
+
+g <- df %>% 
+    filter(base_country_name == "Sweden") %>% 
+    mutate(sign = if_else(net_per_10K_total > 0, "Net sending countries", "Net recieving countries")) %>% 
+    group_by(sign) %>% 
+    mutate(rank = rank(desc((net_per_10K_total)^2))) %>% 
+    ungroup() %>%
+    filter(rank <= 8) %>% 
+    select(- net_per_10K_total) %>% 
+    pivot_longer(net_per_10K_2015:net_per_10K_2019, names_to = "metric") %>% 
+    mutate(year = parse_number(str_remove(metric, "net_per_10K_"))) %>% 
+    ggplot(aes(year, value, colour = target_country_name)) +
+    geom_point_interactive() +
+    geom_line() +
+    facet_wrap(~ sign, nrow = 1) +
+    scale_color_brewer(palette = "Paired") +
+    gghighlight::gghighlight(calculate_per_facet = T) +
+    geom_hline(yintercept = 0, lty = 2) +
+    labs(x = "Year",
+         y = "Net migration")
+
+ggiraph(ggobj = g)
+```
+
