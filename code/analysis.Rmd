@@ -188,12 +188,11 @@ map_locations_tabs <- map_locations %>%
                       escape = F,
                       col.names = c("", "")))
 
-# map_locations_tabs %>% 
-#     write_rds("data/jobs_on_the_rise_map.rds")
+# map_locations_tabs %>% write_rds("data/jobs_on_the_rise_map.rds")
+
+map_locations_tabs <- read_rds("data/jobs_on_the_rise_map.rds")
 
 map_locations_tabs %>% 
-    inner_join(locations %>% select(top_locations_hiring, n)) %>% 
-    
       leaflet(width = 800, height = 500) %>%
       setView(lng = 14.1618,
               lat = 57.7826,
@@ -261,5 +260,42 @@ df %>%
   )
 
 ```
+
+
+# labour market changes
+
+```{r}
+df  <- readxl::read_excel("data/public_use-industry-employment-growth.xlsx", sheet = 4)
+
+df_emp <- df %>%
+  filter(country_name == "Sweden") %>%
+  group_by(industry_id) %>%
+  mutate(avg_growth_rate = mean(c(growth_rate_2015, 
+                                  growth_rate_2016, 
+                                  growth_rate_2017, 
+                                  growth_rate_2018, 
+                                  growth_rate_2019), na.rm = T)) %>%
+  ungroup()
+
+df_emp %>% distinct(isic_section_name)
+
+# df_emp %>% write_rds("data/df_emp.rds")
+
+l <- df_emp %>% 
+    filter(isic_section_name == "Arts, entertainment and recreation") %>% 
+    mutate(sign = avg_growth_rate > 0,
+           industry_name = fct_reorder(industry_name, avg_growth_rate),
+           tooltip = str_c(round(avg_growth_rate, 4)*100, "%")) %>% 
+    ggplot(aes(avg_growth_rate, industry_name, fill = sign, tooltip = tooltip)) +
+    geom_col_interactive() +
+    scale_x_continuous(labels = scales::percent_format(accuracy = .1)) +
+    scale_fill_manual(values = c("#D29C9C", "#92B87A")) +
+    theme(legend.position = "none") +
+    labs(x = "Average growth rate in employment\nJan 2017 - December 2019",
+         y = NULL)
+
+ggiraph(ggobj = l)
+```
+
 
 
