@@ -369,33 +369,35 @@ g <- df_mig %>%
 ggiraph(ggobj = g)
 ```
 
-## What has happenned to employment growth
+## What has happenned to employment growth in Sweden?
 
 ```{r}
-# function to make the tabs
-make_tab <- function(isl) {
-  cat("::: {.panel}\n")
-  cat("##", isl, "{.panel-name}\n")
-  cat("Plot of", isl, "\n")
-  p <- plot_penguins(isl)
-  print(p)
-  cat("\n")
-  cat(":::\n")
-}
-::::: {.panelset}
-# get a list of islands present in the dataset
-isl_list <- unique(df$island) %>% as.character()
-# make the tabs for each island that is there
-for (i in isl_list){
-  
-  make_tab(i)
-  
-}
-:::::
+# # function to make the tabs
+# make_tab <- function(isl) {
+#   cat("::: {.panel}\n")
+#   cat("##", isl, "{.panel-name}\n")
+#   cat("Plot of", isl, "\n")
+#   p <- plot_penguins(isl)
+#   print(p)
+#   cat("\n")
+#   cat(":::\n")
+# }
+# ::::: {.panelset}
+# # get a list of islands present in the dataset
+# isl_list <- unique(df$island) %>% as.character()
+# # make the tabs for each island that is there
+# for (i in isl_list){
+#   
+#   make_tab(i)
+#   
+# }
+# :::::
 ```
 
 
 ```{r}
+df_emp <- read_rds("data/df_emp.rds")
+
 l <- df_emp %>% 
     filter(isic_section_name == "Arts, entertainment and recreation") %>% 
     mutate(sign = avg_growth_rate > 0,
@@ -410,6 +412,13 @@ l <- df_emp %>%
          y = NULL)
 
 ggiraph(ggobj = l)
+```
+
+
+### Have a look at this data for yourself!
+
+```{r}
+knitr::include_url("https://linkedindata.worldbank.org/data")
 ```
 
 
