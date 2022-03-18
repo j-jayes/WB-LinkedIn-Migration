@@ -369,53 +369,73 @@ g <- df_mig %>%
 ggiraph(ggobj = g)
 ```
 
-## What has happenned to employment growth in Sweden?
 
 ```{r}
-# # function to make the tabs
-# make_tab <- function(isl) {
-#   cat("::: {.panel}\n")
-#   cat("##", isl, "{.panel-name}\n")
-#   cat("Plot of", isl, "\n")
-#   p <- plot_penguins(isl)
-#   print(p)
-#   cat("\n")
-#   cat(":::\n")
-# }
-# ::::: {.panelset}
-# # get a list of islands present in the dataset
-# isl_list <- unique(df$island) %>% as.character()
-# # make the tabs for each island that is there
-# for (i in isl_list){
-#   
-#   make_tab(i)
-#   
-# }
-# :::::
-```
 
-
-```{r}
 df_emp <- read_rds("data/df_emp.rds")
 
-l <- df_emp %>% 
-    filter(isic_section_name == "Arts, entertainment and recreation") %>% 
-    mutate(sign = avg_growth_rate > 0,
-           industry_name = fct_reorder(industry_name, avg_growth_rate),
-           tooltip = str_c(round(avg_growth_rate, 4)*100, "%")) %>% 
+# function to make the plots
+plot_employment <- function(section) {
+  l <- df_emp %>%
+    filter(isic_section_name == section) %>%
+    mutate(
+      sign = avg_growth_rate > 0,
+      industry_name = fct_reorder(industry_name, avg_growth_rate),
+      tooltip = str_c(round(avg_growth_rate, 4) * 100, "%")
+    ) %>%
     ggplot(aes(avg_growth_rate, industry_name, fill = sign, tooltip = tooltip)) +
     geom_col_interactive() +
     scale_x_continuous(labels = scales::percent_format(accuracy = .1)) +
     scale_fill_manual(values = c("#D29C9C", "#92B87A")) +
     theme(legend.position = "none") +
-    labs(x = "Average growth rate in employment\nJan 2017 - December 2019",
-         y = NULL)
+    labs(
+      x = paste0("Average growth rate in employment in\n", section, "\nJan 2017 - December 2019"),
+      y = NULL
+    )
 
-ggiraph(ggobj = l)
+  ggiraph(ggobj = l)
+}
+
+
+
+# function to make the tabs
+make_tab <- function(section) {
+  section_short <- word(section, 1) %>% str_remove(., "[:punct:]")
+
+  cat("###", section_short)
+  cat("\n")
+  cat("Plot of employment growth in ", "<b>", section, "</b>")
+  cat("\n")
+  p <- plot_employment(section)
+  print(htmltools::tagList(p))
+  cat("\n")
+}
+
+```
+
+## What has happenned to employment growth in Sweden? {.tabset}
+
+Mouse over the columns to see the rate of employment growth between 2017 and 2019 in Sweden.
+
+```{r, results='asis'}
+
+section_list <- unique(df_emp$isic_section_name) %>% as.character()
+# make the tabs for each island that is there
+for (i in section_list){
+
+  make_tab(i)
+
+}
+
 ```
 
 
-### Have a look at this data for yourself!
+```{r}
+
+```
+
+
+## Have a look at this data for yourself!
 
 ```{r}
 knitr::include_url("https://linkedindata.worldbank.org/data")
