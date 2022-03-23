@@ -1,0 +1,7 @@
+Data index.
+
+public-use*.csv are from LinkedIn WB site: https://linkedindata.worldbank.org/data
+
+Sweden_top_growing_jobs.txt is copied from the Sweden specific jobs report: https://www.linkedin.com/pulse/linkedin-jobs-rise-2022-10-roles-growing-demand-sweden-/
+
+jobs_on_the_rise.rds is a cleaned version of the Sweden_top_jobs.txt file
