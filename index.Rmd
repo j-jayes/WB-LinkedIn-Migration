@@ -23,7 +23,7 @@ theme_set(theme_light())
 
 # What extent of the Swedish labour market do Arbetsformedling's job ads cover?
 
-We want to know whether the job ads on Arbetsformedlingen's Platsbanken are representative of the entire Swedish labour market.
+We want to know whether the job ads on Arbetsförmedlingen's Platsbanken are representative of the entire Swedish labour market.
 
 One way to establish this we can look at another source of job data in Sweden and compare the contents of these.
 
@@ -107,7 +107,7 @@ The lack of language skills might also be a function of the way that the top ski
 
 In other words, if the skills "English" and "Swedish" appear as skills across many jobs, these terms will not occur in the top skills for these 10 fastest growing jobs because they are not *specific* to these jobs.
 
-In order to better compare the LinkedIn data on Sweden and the Arbetsformedlingen data, it might be worth replicating the process to find the fastest growing job vacancies in Arbetsformedlingen's data and looking at the skills most specific to these jobs.
+In order to better compare the LinkedIn data on Sweden and Arbetsförmedlingen data, it might be worth replicating the process to find the fastest growing job vacancies in Arbetsförmedlingen's data and looking at the skills most specific to these jobs.
 
 ### What else can we learn from the Jobs on the Rise data?
 
