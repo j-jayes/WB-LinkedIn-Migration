@@ -1,5 +1,5 @@
 ---
-title: "present"
+title: "WIP"
 author: "JJayes"
 date: "16/03/2022"
 output: 
@@ -109,7 +109,7 @@ In other words, if the skills "English" and "Swedish" appear as skills across ma
 
 In order to better compare the LinkedIn data on Sweden and the Arbetsformedlingen data, it might be worth replicating the process to find the fastest growing job vacancies in Arbetsformedlingen's data and looking at the skills most specific to these jobs.
 
-## What else can we learn from the Jobs on the Rise data?
+### What else can we learn from the Jobs on the Rise data?
 
 ### What share of these jobs are filled by women?
 
@@ -161,6 +161,8 @@ ggiraph(ggobj = g)
 ### Experience and remote share {.tabset}
 
 The Jobs on the Rise report also includes information on the attributes of the incumbents in these roles. It includes the median years of experience listed on LinkedIn, as well as the share of jobs which are done remotely.
+
+Mouse over the dots to see the values in each tab.
 
 #### Experience
 
@@ -358,7 +360,7 @@ The purpose of including this source is to better understand what part of the la
 
 ### Industry skill needs
 
-The table below shows the industry and sectors which list the Foreign Language as an important skill. 
+The table below shows the industry and sectors which list the Foreign Language as an important skill, across all of the countries in which LinkedIn operates. Translation & Localization within the sector Professional scientific and technical activities has the highest ranking of foreign language skills as a top skill, at 4. The next highest is animation, within sector Arts, entertainment and recreation at 5. 
 
 ```{r}
 df <- readxl::read_excel("data/public_use-industry-skills-needs.xlsx", sheet = 4)
@@ -368,13 +370,14 @@ library(htmltools)
 table <- df %>%
   filter(skill_group_name == "Foreign Languages") %>%
   select(isic_section_name, industry_name, skill_group_rank) %>%
+    distinct(isic_section_name, industry_name, .keep_all = T) %>% 
   reactable(
     filterable = T,
     columns = list(
       skill_group_rank = colDef(
         name = "Skill group rank", filterable = FALSE,
         header = function(value) {
-          tags$a(href = "https://wikipedia.org/wiki/List_of_Iris_species", title = "Iris species", value)
+          tags$a(href = "https://development-data-hub-s3-public.s3.amazonaws.com/ddhfiles/1202911/skill-group-definitions.pdf", title = "Skill learning definitions", value)
         }
       ),
       isic_section_name = colDef(name = "Sector"),
@@ -384,7 +387,7 @@ table <- df %>%
 
 
 
-htmlwidgets::prependContent(table, h2(class = "title", "Industry and sectors ranking 'Foreign Language' amongst top skills"))
+htmlwidgets::prependContent(table, h4(class = "title", "Industry and sectors ranking 'Foreign Language' amongst top skills"))
 ```
 
 
@@ -455,7 +458,7 @@ plot_employment <- function(section) {
 make_tab <- function(section) {
   section_short <- word(section, 1) %>% str_remove(., "[:punct:]")
 
-  cat("###", section_short)
+  cat("####", section_short)
   cat("\n")
   cat("Plot of employment growth in ", "<b>", section, "</b>")
   cat("\n")
@@ -465,7 +468,7 @@ make_tab <- function(section) {
 }
 ```
 
-## What has happenned to employment growth in Sweden? {.tabset}
+### What has happenned to employment growth in Sweden? {.tabset}
 
 Mouse over the columns to see the rate of employment growth between 2017 and 2019 in Sweden.
 
@@ -486,16 +489,11 @@ for (i in section_list){
 
 ```
 
+### Have a look at this data for yourself!
+
+[Here is a link to the interactive web page](https://linkedindata.worldbank.org/data). The picture below shows what it looks like.
 
 ```{r}
-
+knitr::include_graphics("slides/wb_linkedin.PNG")
 ```
-
-
-## Have a look at this data for yourself!
-
-```{r}
-knitr::include_url("https://linkedindata.worldbank.org/data")
-```
-
 
