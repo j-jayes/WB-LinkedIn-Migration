@@ -25,7 +25,7 @@ theme_set(theme_light())
 
 We want to know whether the job ads on Arbetsformedlingen's Platsbanken are representative of the entire Swedish labour market.
 
-One way to establish this we can look at another source of job data in Sweden and compare the contents of these adverts.
+One way to establish this we can look at another source of job data in Sweden and compare the contents of these.
 
 ```{r, fig.cap="Overlap in job data"}
 include_graphics("slides/slide-diagram.jpg")
@@ -34,15 +34,15 @@ include_graphics("slides/slide-diagram.jpg")
 
 ## Data sources
 
-We will use data from the social networking site [LinkedIn](https://www.linkedin.com/). There are two sources of information that we will examine, the first is focussed on Sweden specifically, while the second is aggregated data from all of the countries in which LinkedIn operates. The first source is called the [LinkedIn Jobs on the Rise 2022 Report](https://www.linkedin.com/pulse/linkedin-jobs-rise-2022-10-roles-growing-demand-sweden-/) covering the 10 roles that are growing in demand in Sweden.
+We will use data from the social networking site [LinkedIn](https://www.linkedin.com/). There are two sources of information that we will examine, the first is focussed on Sweden specifically, while the second is aggregated data from all of the countries in which LinkedIn operates. The first source is called the [LinkedIn Jobs on the Rise 2022 Report](https://www.linkedin.com/pulse/linkedin-jobs-rise-2022-10-roles-growing-demand-sweden-/) covering the 10 roles that are growing fastest in demand in Sweden. The second is called [Industry Jobs and Skills Trends](https://linkedindata.worldbank.org/data) produced by the [World Bank LinkedIn Digital Data for Development](https://linkedindata.worldbank.org/data) project.
 
 ## Jobs on the Rise
 
-This report measures the job titles "experiencing the highest growth rates from January 2017 through July 2021". It also provides information about the people who fill these jobs with these titles currently, based on the infomation on LinkedIn.
+This first report measures the job titles "experiencing the highest growth rates from January 2017 through July 2021" in Sweden. It also provides information about the people who fill jobs with these titles currently, based on the information on LinkedIn.
 
 ### What are the fastest growing jobs?
 
-The report states that these 10 are the fastest growing jobs in Sweden.
+The report states that these 10 are the fastest growing jobs in Sweden, as measured by LinkedIn.
 
 ```{r}
 df <- read_rds("data/jobs_on_the_rise.rds")
@@ -95,7 +95,7 @@ df %>%
   )
 ```
 
-The lack of language skills might also be a function of the way that the top skills are identified. The methodology section of the Jobs on the Rise report is not very informative about how the top skills are mined, but in the methodlogy section of the LinkedIn and Worlbank data which we look to next, it states that: 
+The lack of language skills might also be a function of the way that the top skills are identified. The methodology section of the Jobs on the Rise report is not very informative about how the top skills are mined, but in the methodology section of the LinkedIn and Worldbank data which we look to next, it states that: 
 
 <blockquote>
 
@@ -103,7 +103,7 @@ The lack of language skills might also be a function of the way that the top ski
 
 </blockquote>
 
-Source: ["World Bank LinkedIn Digital Data for Development" by World Bank Group & LinkedIn Corporation](https://linkedindata.worldbank.org/data)
+*Source: ["World Bank LinkedIn Digital Data for Development" by World Bank Group & LinkedIn Corporation](https://linkedindata.worldbank.org/data)*
 
 In other words, if the skills "English" and "Swedish" appear as skills across many jobs, these terms will not occur in the top skills for these 10 fastest growing jobs because they are not *specific* to these jobs.
 
@@ -329,13 +329,68 @@ LinkedIn Economic Graph researchers examined millions of jobs started by LinkedI
 
 ## LinkedIn World Bank data
 
-Source description:
+The second source of data is a collaboration between LinkedIn and the World Bank, and includes four different sections. This source provides data on: 
 
-The purpose of including this source is to better understand what part of the labour market is captured by LinkedIn. It is my supposition that the upper end of the income distribtuion is in jobs found on LinkedIn - but I could be very wrong! The two country level measures provided in the LinkedIn World Bank data 
+```{r}
+tibble(sections = c("Industry skill needs",
+                    "Skill pentration",
+                    "Industry employment shifs",
+                    "Talent migration"),
+       descriptions = c("The Industry Skills Needs metric captures which skills are most likely to be added to a member's profile in one industry compared to other industries",
+                        "The Skill Penetration metric looks at how many skills from each of LinkedIn's skill groups appear among the top 30 skills for each occupation in an industry",
+                        "The Growth from Industry Transitions metric looks at how LinkedIn members are moving across industries",
+                        "The Talent Migration metrics measure arrivals minus departures in a country, sliced by source and destination, industry, and skill.")) %>% 
+    reactable(columns = list(
+        sections = colDef(maxWidth = 100)
+    ),
+    defaultColDef = colDef(
+      header = function(value) gsub("_", " ", value, fixed = TRUE) %>% str_to_title,
+      cell = function(value) format(value, nsmall = 1),
+      align = "left",
+      minWidth = 70,
+      headerStyle = list(background = "#f7f7f8")
+    ),
+    bordered = T,
+    highlight = T)
+```
 
-### Who goes where?
+The purpose of including this source is to better understand what part of the labour market is captured by LinkedIn. It is my supposition that the upper end of the income distribution is in jobs found on LinkedIn - but I could be very wrong! The two country level measures provided in the LinkedIn World Bank data 
 
-Talent migration is one of the features captured in the data released by LinkedIn and the World Bank.
+### Industry skill needs
+
+The table below shows the industry and sectors which list the Foreign Language as an important skill. 
+
+```{r}
+df <- readxl::read_excel("data/public_use-industry-skills-needs.xlsx", sheet = 4)
+
+library(htmltools)
+
+table <- df %>%
+  filter(skill_group_name == "Foreign Languages") %>%
+  select(isic_section_name, industry_name, skill_group_rank) %>%
+  reactable(
+    filterable = T,
+    columns = list(
+      skill_group_rank = colDef(
+        name = "Skill group rank", filterable = FALSE,
+        header = function(value) {
+          tags$a(href = "https://wikipedia.org/wiki/List_of_Iris_species", title = "Iris species", value)
+        }
+      ),
+      isic_section_name = colDef(name = "Sector"),
+      industry_name = colDef(name = "Industry")
+    )
+  )
+
+
+
+htmlwidgets::prependContent(table, h2(class = "title", "Industry and sectors ranking 'Foreign Language' amongst top skills"))
+```
+
+
+### Where do Sweden's leavers go? Where do workers come to Sweden from?
+
+Talent migration is one of the features captured in the data released by LinkedIn and the World Bank. The graph below shows the evolution of migration patterns in Sweden, as captured by the LinkedIn data. It shows that countries like Malta and Luxembourg are net receivers, while India, the UK and the US are the highest sending countries. This shows how the LinkedIn data is likely to capture the top of the income distribution ~ those kinds of jobs that are high skilled and high paid.
 
 ```{r}
 df <- read_rds("skilled-migration/df.rds")
@@ -396,8 +451,6 @@ plot_employment <- function(section) {
   ggiraph(ggobj = l)
 }
 
-
-
 # function to make the tabs
 make_tab <- function(section) {
   section_short <- word(section, 1) %>% str_remove(., "[:punct:]")
@@ -410,7 +463,6 @@ make_tab <- function(section) {
   print(htmltools::tagList(p))
   cat("\n")
 }
-
 ```
 
 ## What has happenned to employment growth in Sweden? {.tabset}
@@ -419,7 +471,12 @@ Mouse over the columns to see the rate of employment growth between 2017 and 201
 
 ```{r, results='asis'}
 
-section_list <- unique(df_emp$isic_section_name) %>% as.character()
+section_list <- df_emp %>% 
+    select(isic_section_name) %>% 
+    arrange(isic_section_name) %>% 
+    pull() %>% 
+    unique() %>% 
+    as.character()
 # make the tabs for each island that is there
 for (i in section_list){
 
@@ -440,17 +497,5 @@ for (i in section_list){
 ```{r}
 knitr::include_url("https://linkedindata.worldbank.org/data")
 ```
-
-
-
-Definitions:
-
-<blockquote>
-
-The Industry Skills Needs metric captures which skills are most likely to be added to a member's profile in one industry compared to other industries. It's calculated using an adapted version of a text mining technique called Term Frequency - Inverse Document Frequency (TF-IDF). This method gives more weight to a skill for an industry if more members in the industry list the skill on their profiles and the skill is more unique to the industry. The skills included are those added while a member holds a particular occupation (the skill flow approach). While the skill flow approach creates a trade-off whereby long-held basic skills, such as Microsoft Office being given a lesser weight, the approach is shown to be stronger at identifying the latest emerging skills in a specific industry than including all historical skills that are added during prior occupations. On balance, since the objective of this metric is to detect the latest skills needs, a skill flow approach is adopted.
-
-</blockquote>
-
-
 
 
